@@ -10,6 +10,7 @@ app.use(bodyParser.json())
 app.use(auth)
 const port = 8000
 
+
 mongoose.connect('mongodb://127.0.0.1:27017')
   .then(() => {
     console.log('Connection to MongoDB established')

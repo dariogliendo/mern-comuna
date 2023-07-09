@@ -12,6 +12,17 @@
         "<node_internals>/**"
       ],
       "program": "${workspaceFolder}\\server.js"
+    },
+    {
+      "name": "Dev Debug",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
     }
   ]
 }
