@@ -10,6 +10,7 @@ const schema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  admin: Boolean,
 })
 
 const userModel = mongoose.model('users', schema)

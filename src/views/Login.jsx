@@ -6,6 +6,16 @@ const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  width: 25vw;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  border: 1px solid white;
+  border-radius: 8px;
+  background-color: #333333;
+`
+
+const ErrorMessage = styled.span`
+  color: red;
 `
 
 const Login = () => {
@@ -13,24 +23,38 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-  const login = async () => {
+  const login = async (e) => {
     try {
-      const token = await axiosInstance.post('/auth/login', {
+      if (e) e.preventDefault()
+      const { data } = await axiosInstance.post('/auth/login', {
         email: email,
         password: password,
       })
-      console.log(token)
+      localStorage.setItem('session', JSON.stringify(data.sessionInfo))
+      console.log(data.sessionInfo.token)
+      axiosInstance.defaults.headers.authorization = data.sessionInfo.token
+      window.location.reload()
     } catch (error) {
-      setError(error.msg)
+      switch(error.response?.status) {
+        case 401: setError('Usuario o contraseña incorrectos'); break;
+        case 403: setError('Debe ingresar usuario y contraseña'); break;
+        default: setError('Hubo un error para identificarte')
+      }
     }
+  }
+
+  const passwordChange = (e) => {
+    if (error?.length) setError('')
+    setPassword(e.target.value)
   }
 
   return (
     <LoginForm>
-      <input type="email" placeholder="usuario@mail.com" onChange={e => setEmail(e.target.value)}></input>
-      <input type="password" onChange={e => setPassword(e.target.value)}></input>
-      <button type="button" onClick={login}></button>
-      {error ? <span>{error}</span> : ''}
+      <h1 style={{margin: 0}}>Ingresar</h1>
+      <input type="email" placeholder="Email" onChange={e => setEmail(e.target.value)}></input>
+      <input type="password" onChange={passwordChange} placeholder="Contraseña"></input>
+      <button type="submit" onClick={e => login(e)}>Ingresar</button>
+      {error.length ? <ErrorMessage>{error}</ErrorMessage> : ''}
     </LoginForm>
   )
 }

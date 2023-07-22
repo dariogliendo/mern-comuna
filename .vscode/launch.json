@@ -21,8 +21,10 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": [
         "run",
-        "dev"
+        "debug"
       ],
+      "restart": true,
+      "protocol": "inspector"
     }
   ]
 }

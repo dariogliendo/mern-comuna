@@ -3,11 +3,17 @@ import auth from './API/auth.js'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
+import userApi from './API/user.api.js'
+import roomApi from './API/room.api.js'
+import authorization from './middleware/authorization.js'
 
 const app = express()
 app.use(cors())
 app.use(bodyParser.json())
 app.use(auth)
+app.use(authorization)
+app.use(roomApi)
+app.use(userApi)
 const port = 8000
 
 
